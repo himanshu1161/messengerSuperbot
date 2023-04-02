@@ -156,7 +156,50 @@ function handleMessage(sender_psid, received_message) {
     // Send the response message
     callSendAPI(sender_psid, response);
 }
-
+function handlePostback(senderPsid, receivedPostback) {
+    let response;
+  
+    // Get the payload for the postback
+    let payload = receivedPostback.payload;
+  
+    // Set the response based on the postback payload
+    if (payload === 'yes') {
+      response = { 'text': 'Thanks!' };
+    } else if (payload === 'no') {
+      response = { 'text': 'Oops, try sending another image.' };
+    }
+    // Send the message to acknowledge the postback
+    callSendAPI(senderPsid, response);
+  }
+  
+  // Sends response messages via the Send API
+  function callSendAPI(senderPsid, response) {
+  
+    // The page access token we have generated in your app settings
+    const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+  
+    // Construct the message body
+    let requestBody = {
+      'recipient': {
+        'id': senderPsid
+      },
+      'message': response
+    };
+  
+    // Send the HTTP request to the Messenger Platform
+    request({
+      'uri': 'https://graph.facebook.com/v2.6/me/messages',
+      'qs': { 'access_token': PAGE_ACCESS_TOKEN },
+      'method': 'POST',
+      'json': requestBody
+    }, (err, _res, _body) => {
+      if (!err) {
+        console.log('Message sent!');
+      } else {
+        console.error('Unable to send message:' + err);
+      }
+    });
+  }
 // Define the template and webview
 function setRoomPreferences(sender_psid) {
     let response = {
