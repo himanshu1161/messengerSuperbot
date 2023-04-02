@@ -195,6 +195,7 @@ function handlePostback(senderPsid, receivedPostback) {
     }, (err, _res, _body) => {
       if (!err) {
         console.log('Message sent!');
+        console.log(_res,_body)
       } else {
         console.error('Unable to send message:' + err);
       }
