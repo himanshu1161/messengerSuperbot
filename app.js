@@ -142,9 +142,14 @@ function handleMessage(sender_psid, received_message) {
                 response = setRoomPreferences(sender_psid);
                 break;
             default:
-                response = {
-                    "text": `You sent the message: "${received_message.text}".`
-                };
+                if(received_message.text === 'hi'){
+                    response = {
+                        "text": 'hello'
+                    };
+                }
+                // response = {
+                //     "text": `You sent the message: "${received_message.text}".`
+                // };
                 break;
         }
     } else {
